@@ -1,69 +1,240 @@
-# styled-jsx-plugin-sass
+# styled-jsx-plugin-sass-pxtorem
 
-[![Build Status](https://travis-ci.org/giuseppeg/styled-jsx-plugin-sass.svg?branch=master)](https://travis-ci.org/giuseppeg/styled-jsx-plugin-sass)
-[![npm](https://img.shields.io/npm/v/styled-jsx-plugin-sass.svg)](https://www.npmjs.com/package/styled-jsx-plugin-sass)
+Use [Sass and pxtorem](http://sass-lang.com/) with [styled-jsx](https://github.com/zeit/styled-jsx) 💥
 
-Use [Sass](http://sass-lang.com/) with [styled-jsx](https://github.com/zeit/styled-jsx) 💥
-
-⚠️ **This plugin is not actively being maintained. If you want me to work on it please [consider donating](https://github.com/sponsors/giuseppeg).**
+The code fork for [styled-jsx-plugin-sass](https://github.com/giuseppeg/styled-jsx-plugin-sass)
 
 ## Usage
 
 Install the package first.
 
 ```bash
-npm install --save-dev styled-jsx-plugin-sass
+npm install --save-dev styled-jsx-plugin-sass-pxtorem
 ```
 
-Install the `node-sass` version you need (it is a peer dependency).
+Install the `sass` version you need (it is a peer dependency).
 
 ```bash
-npm install --save-dev node-sass
+npm install --save-dev sass
 ```
 
-Next, add `styled-jsx-plugin-sass` to the `styled-jsx`'s `plugins` in your babel configuration:
+Next, add `styled-jsx-plugin-sass-pxtorem` to the `styled-jsx`'s `plugins` in your babel configuration:
 
 ```json
 {
   "plugins": [
     [
       "styled-jsx/babel",
-      { "plugins": ["styled-jsx-plugin-sass"] }
-    ]
-  ]
-}
-```
-
-## Node-sass options
-
-Node-sass can be configured using `sassOptions`. This is useful for setting options such as `includePaths` or `precision`.
-
-```json
-{
-  "plugins": [
-    [
-      "styled-jsx/babel",
-      {
+      { 
         "plugins": [
-          ["styled-jsx-plugin-sass", {
-              "sassOptions": {
-                "includePaths": ["./styles"],
-                "precision": 2
+          "styled-jsx-plugin-sass-pxtorem",
+          {
+            "sassOptions": {
+              "data": "@import '$path/variables.scss';"
+            },
+            "rem": {
+              // 1rem=100px,
+              "rootValue": 100,
+              // toFixed(2)
+              "unitPrecision": 2,
+              // @media screen and (min-width: 1000px)
+              "mediaQuery": false,
+              // >= 2px
+              "minPixelValue": 2,
+              "selectorIgnore": [
+                "html",
+                ".ignore-test**"
+              ],
+              /* @pxtorem-ignore */
+              "commentIgnore": "@pxtorem-ignore",
+              "keyValueIgnore": {
+                "font-size": "12px"
               }
             }
-          ]
-        ]
+          }
+        ] 
       }
     ]
   ]
 }
 ```
 
-#### Notes
+next.js
 
-`styled-jsx-plugin-sass` uses `styled-jsx`'s plugin system which is supported from version 2.
+```json
+{
+  "presets": [
+    [
+      "next/babel",
+      {
+        "styled-jsx": {
+          "plugins": [
+            [
+              "styled-jsx-plugin-sass-pxtorem",
+              {
+                "sassOptions": {
+                  "data": "@import '$path/variables.scss';"
+                },
+                "rem": {
+                  // 1rem=100px,
+                  "rootValue": 100,
+                  // toFixed(2)
+                  "unitPrecision": 2,
+                  // @media screen and (min-width: 1000px)
+                  "mediaQuery": false,
+                  // >= 2px
+                  "minPixelValue": 2,
+                  "selectorIgnore": [
+                    "html",
+                    ".ignore-test**"
+                  ],
+                  /* @pxtorem-ignore */
+                  "commentIgnore": "@pxtorem-ignore",
+                  "keyValueIgnore": {
+                    "font-size": "12px"
+                  }
+                }
+              }
+            ]
+          ]
+        }
+      }
+    ]
+  ],
+  "plugins": []
+}
+```
 
-Read more on their repository for further info.
+
+## examples styled-jsx
+
+```scss
+// input
+.hello {
+  padding: 100px;
+
+  :global(.button-50px) {
+    background-image: none;
+  }
+}
+
+// output
+.hello {
+  padding: 1rem;
+
+  :global(.button-50px) {
+    background-image: none;
+  }
+}
+
+// input
+.test {
+  /* @pxtorem-ignore */
+  margin: 10px;
+  /* @pxtorem-ignore */
+  padding: 10px;
+  font-size: 12px; // options.keyValueIgnore
+  background: url(10px.jpg);
+}
+
+// output
+.test {
+  /* @pxtorem-ignore */
+  margin: 10px;
+  /* @pxtorem-ignore */
+  padding: 10px;
+  font-size: 12px; // options.keyValueIgnore
+  background: url(10px.jpg);
+}
+
+// input
+:root {
+  --a12px: 12px;
+}
+
+.var-test {
+  padding: var(--a12px);
+}
+
+// output
+:root {
+  --a12px: 0.12rem;
+}
+
+.var-test {
+  padding: var(--a12px);
+}
+
+// input options.selectorIgnore ["html"]
+html {
+  font-size: 30px;
+  margin: 30px;
+
+  .b {
+    font-size: 25px;
+  }
+}
+
+html {
+  padding: 24px;
+}
+
+.b {
+  font-size: 30px;
+}
+
+// output options.selectorIgnore ["html"]
+html {
+  font-size: 30px;
+  margin: 30px;
+
+  .b {
+    font-size: 0.25rem;
+  }
+}
+
+html {
+  padding: 24px;
+}
+
+.b {
+  font-size: 0.3rem;
+}
+
+// input options.selectorIgnore [".ignore-test**"]
+.ignore-test {
+  font-size: 30px;
+
+  .b {
+    font-size: 25px;
+  }
+}
+
+.a {
+  font-size: 30px;
+}
+
+// output options.selectorIgnore [".ignore-test**"]
+.ignore-test {
+  font-size: 30px;
+
+  .b {
+    font-size: 25px;
+  }
+}
+
+.a {
+  font-size: 0.3rem;
+}
+
+// input/output options.mediaQuery false
+@media screen and (min-width: 1000px) and (max-width: 1280px) {
+  .a {
+    color: #fff;
+    background: url("20px.jpg");
+  }
+}
+```
 
 ## License
 

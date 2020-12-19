@@ -1,32 +1,31 @@
 {
-  "name": "styled-jsx-plugin-sass",
+  "name": "styled-jsx-plugin-sass-pxtorem",
   "version": "1.0.0",
-  "description": "Plugin to add Sass support to styled-jsx",
+  "description": "Plugin to add Sass and pxtorem support to styled-jsx",
   "main": "index.js",
   "scripts": {
     "test": "mocha test.js"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/giuseppeg/styled-jsx-plugin-sass.git"
+    "url": "git@github.com:J-env/styled-jsx-plugin-sass.git"
   },
   "keywords": [
     "styled-jsx-plugin",
     "styled-jsx",
-    "sass"
+    "sass",
+    "pxtorem"
   ],
   "author": "Giuseppe Gurgone",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/giuseppeg/styled-jsx-plugin-sass/issues"
+    "url": "https://github.com/J-env/styled-jsx-plugin-sass/issues"
   },
-  "homepage": "https://github.com/giuseppeg/styled-jsx-plugin-sass#readme",
-  "peerDependencies": {
-    "node-sass": "*"
-  },
+  "homepage": "https://github.com/J-env/styled-jsx-plugin-sass#readme",
   "devDependencies": {
     "mocha": "^4.0.1",
-    "node-sass": "^4.5.3",
+    "sass": "^1.30.0",
     "strip-indent": "^2.0.0"
-  }
+  },
+  "dependencies": {}
 }
