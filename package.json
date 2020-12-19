@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git@github.com:J-env/styled-jsx-plugin-sass.git"
+    "url": "git+ssh://git@github.com/J-env/styled-jsx-plugin-sass.git"
   },
   "keywords": [
     "styled-jsx-plugin",
