@@ -1,5 +1,5 @@
 {
-  "name": "styled-jsx-plugin-sass-pxtorem",
+  "name": "styled-jsx-plugin-pro",
   "version": "1.0.1",
   "description": "Plugin to add Sass and pxtorem support to styled-jsx",
   "main": "index.js",
@@ -14,15 +14,17 @@
     "styled-jsx-plugin",
     "styled-jsx",
     "sass",
-    "pxtorem"
+    "pxtorem",
+    "styled-jsx-rtl"
   ],
-  "author": "Giuseppe Gurgone",
+  "author": "J-env",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/J-env/styled-jsx-plugin-sass/issues"
   },
   "homepage": "https://github.com/J-env/styled-jsx-plugin-sass#readme",
   "devDependencies": {
+    "cssjanus": "^2.1.0",
     "mocha": "^4.0.1",
     "sass": "^1.30.0",
     "strip-indent": "^2.0.0"

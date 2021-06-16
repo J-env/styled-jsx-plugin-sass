@@ -1,6 +1,4 @@
 const sass = require('sass');
-const path = require('path');
-
 // excluding regex trick: http://www.rexegg.com/regex-best-trick.html
 
 // Not anything inside double quotes
@@ -32,7 +30,7 @@ let rem_options;
 
 module.exports = (css, settings) => {
   // pxtorem
-  if (settings.rem != null) {
+  if (settings.rem) {
     rem_options = rem_options || Object.assign({}, rem_defaults, settings.rem || {});
     _regexpGroupStr = _regexpGroupStr || createRegexpGroupStr(rem_options);
     
@@ -58,12 +56,17 @@ module.exports = (css, settings) => {
   const optionData = settings.sassOptions && settings.sassOptions.data || "";
   const data = optionData + "\n" + cssWithPlaceholders;
 
-  const preprocessed = sass.renderSync(
+  let preprocessed = sass.renderSync(
     Object.assign(
       {},
       settings.sassOptions,
       { data }
     )).css.toString();
+
+  // rtl
+  if (settings.rtlMode) {
+    preprocessed = require('cssjanus').transform(preprocessed)
+  }
 
   return preprocessed
     .replace(/styled-jsx-placeholder-(\d+)-(\w*\s*[),;!{])/g, (_, id, p1) =>

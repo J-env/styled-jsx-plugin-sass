@@ -75,6 +75,7 @@ next.js
                 "sassOptions": {
                   "data": "@import '$path/variables.scss';"
                 },
+                "rtlMode": true,
                 "rem": {
                   // 1rem=100px,
                   "rootValue": 100,
